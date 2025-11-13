@@ -1,6 +1,3 @@
-// ********Stores all material types with stock levels
-
-
 // models/Material.js
 import mongoose from "mongoose";
 
@@ -13,19 +10,20 @@ const materialSchema = new mongoose.Schema(
       trim: true,
     },
     unit: {
-      type: String, // e.g. "Bags", "Ton", "Cubic Feet"
+      type: String, // Bags, Ton, Cubic Feet, etc.
       required: true,
     },
     description: {
       type: String,
+      default: "",
     },
     currentStock: {
       type: Number,
       default: 0,
+      min: 0,
     },
   },
   { timestamps: true }
 );
 
-const Material = mongoose.model("Material", materialSchema);
-export default Material;
+export default mongoose.model("Material", materialSchema);

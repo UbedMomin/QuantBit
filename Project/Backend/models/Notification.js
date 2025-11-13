@@ -1,6 +1,3 @@
-//***Tracks alerts sent to users (e.g., "Your material request was approved.") */
-
-
 // models/Notification.js
 import mongoose from "mongoose";
 
@@ -8,7 +5,7 @@ const notificationSchema = new mongoose.Schema(
   {
     recipient: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // who receives the notification
+      ref: "User",
       required: true,
     },
     message: {
@@ -28,5 +25,4 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Notification = mongoose.model("Notification", notificationSchema);
-export default Notification;
+export default mongoose.model("Notification", notificationSchema);
