@@ -1,6 +1,3 @@
-//Logs historical material usage and consumption per site
-
-
 // models/Consumption.js
 import mongoose from "mongoose";
 
@@ -18,6 +15,7 @@ const consumptionSchema = new mongoose.Schema(
     quantityUsed: {
       type: Number,
       required: true,
+      min: 0,
     },
     usedAtSite: {
       type: String,
@@ -36,5 +34,4 @@ const consumptionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Consumption = mongoose.model("Consumption", consumptionSchema);
-export default Consumption;
+export default mongoose.model("Consumption", consumptionSchema);

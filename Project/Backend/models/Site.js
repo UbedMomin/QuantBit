@@ -1,6 +1,3 @@
-//**** Maintains project site details and assigns responsible engineer */
-
-
 // models/Site.js
 import mongoose from "mongoose";
 
@@ -17,12 +14,10 @@ const siteSchema = new mongoose.Schema(
     },
     siteEngineer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Engineer responsible for the site
+      ref: "User",
       required: true,
     },
-    startDate: {
-      type: Date,
-    },
+    startDate: Date,
     status: {
       type: String,
       enum: ["Active", "Completed", "On Hold"],
@@ -32,5 +27,4 @@ const siteSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Site = mongoose.model("Site", siteSchema);
-export default Site;
+export default mongoose.model("Site", siteSchema);

@@ -1,6 +1,3 @@
-//Handles user details, roles (Engineer, Manager, Admin), and password security
-
-
 // models/User.js
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
@@ -17,6 +14,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
     password: {
       type: String,
@@ -32,18 +30,18 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Encrypt password before saving
+// Hash password before save
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
+
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// Compare passwords for login
+// Compare passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
-export default User;
+export default mongoose.model("User", userSchema);

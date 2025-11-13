@@ -1,6 +1,3 @@
-//Stores all material requests, approval info, and delivery status
-
-
 // models/Request.js
 import mongoose from "mongoose";
 
@@ -18,6 +15,7 @@ const requestSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       required: true,
+      min: 1,
     },
     remarks: {
       type: String,
@@ -28,24 +26,27 @@ const requestSchema = new mongoose.Schema(
       enum: ["Pending", "Approved", "Rejected", "In Transit", "Delivered"],
       default: "Pending",
     },
+
+    // Cloudinary URL or Local Upload
     sitePhoto: {
-      type: String, // will store uploaded file path (e.g., /uploads/site_photos/image.jpg)
+      type: String,
+      default: "",
     },
+
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
     approvedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    deliveryDate: {
-      type: Date,
-    },
+
+    deliveryDate: Date,
   },
   { timestamps: true }
 );
 
-const Request = mongoose.model("Request", requestSchema);
-export default Request;
+export default mongoose.model("Request", requestSchema);
