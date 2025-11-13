@@ -1,3 +1,6 @@
+// Summaries and material consumption history
+
+
 // reportController.js
 import Request from "../models/Request.js";
 
