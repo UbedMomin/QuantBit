@@ -1,35 +1,15 @@
 import multer from "multer";
-import path from "path";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
-// Create folder if not exist
-import fs from "fs";
-const folderPath = "uploads/site_photos";
-if (!fs.existsSync(folderPath)) {
-  fs.mkdirSync(folderPath, { recursive: true });
-}
-
-// Storage configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, folderPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "material-portal",
+    allowed_formats: ["jpg", "jpeg", "png"],
   },
 });
 
-// Only allow image files
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-
-  if (allowedTypes.includes(file.mimetype)) cb(null, true);
-  else cb(new Error("Only JPG, JPEG, PNG files are allowed."), false);
-};
-
-// Create multer upload middleware
-const upload = multer({
-  storage,
-  fileFilter,
-});
+const upload = multer({ storage });
 
 export default upload;
