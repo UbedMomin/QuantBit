@@ -1,25 +1,32 @@
 import multer from "multer";
 import path from "path";
 
-// Storage Location
+// Create folder if not exist
+import fs from "fs";
+const folderPath = "uploads/site_photos";
+if (!fs.existsSync(folderPath)) {
+  fs.mkdirSync(folderPath, { recursive: true });
+}
+
+// Storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/site_photos");
+    cb(null, folderPath);
   },
-
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
-// Allowed file types
+// Only allow image files
 const fileFilter = (req, file, cb) => {
-  const allowed = ["image/jpeg", "image/jpg", "image/png"];
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
 
-  if (allowed.includes(file.mimetype)) cb(null, true);
-  else cb(new Error("Only JPG, JPEG, PNG allowed"), false);
+  if (allowedTypes.includes(file.mimetype)) cb(null, true);
+  else cb(new Error("Only JPG, JPEG, PNG files are allowed."), false);
 };
 
+// Create multer upload middleware
 const upload = multer({
   storage,
   fileFilter,
